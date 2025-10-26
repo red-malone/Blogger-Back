@@ -25,10 +25,12 @@ app.get('/health',(req,res)=>{
 
 //importing user routes
 const userRouter=require('./src/routes/userRouter')
+const blogRouter=require('./src/routes/blogRouter')
 
-//user routes middleware
+
+//Routes
 app.use('/users',userRouter);
-
+app.use('/blogs',blogRouter);
 //invalid route handler
 app.use('/',(req,res,next)=>{
     const error=new Error('Route not found');

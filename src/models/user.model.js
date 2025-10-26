@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { link } = require('../../app');
 
 const userSchema=new mongoose.Schema({
     username:{

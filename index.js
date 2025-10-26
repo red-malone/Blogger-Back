@@ -4,6 +4,10 @@ const app=express();
 const helmet =require('helmet')
 const morgan =require('morgan') 
 const errorHandler=require('./src/middleware/errorHandler')
+const connectDB=require('./src/database/dbconnect')
+
+//connect to database
+connectDB();
 
 //middleware
 app.use(helmet());
@@ -19,6 +23,11 @@ app.get('/health',(req,res)=>{
     res.status(200).json({status:'OK',message:'API is healthy'});
 })
 
+//importing user routes
+const userRouter=require('./src/routes/userRouter')
+
+//user routes middleware
+app.use('/users',userRouter);
 
 //invalid route handler
 app.use('/',(req,res,next)=>{

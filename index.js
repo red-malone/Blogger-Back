@@ -5,6 +5,10 @@ const helmet =require('helmet')
 const morgan =require('morgan') 
 const errorHandler=require('./src/middleware/errorHandler')
 const connectDB=require('./src/database/dbconnect')
+const cors=require('cors')
+
+//enable cors
+app.use(cors());
 
 //connect to database
 connectDB();
@@ -12,7 +16,6 @@ connectDB();
 //middleware
 app.use(helmet());
 app.use(morgan('dev'));
-
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
 

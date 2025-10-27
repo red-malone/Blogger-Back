@@ -54,6 +54,20 @@ const loginUser=async (req,res)=>{
     }
 }
 
+//Get USer Details Controller
+const getUserDetails=async(req,res)=>{
+    try{
+        const userId=req.user.id;
+        const user=await User.findById(userId).select('-password');
+        if(!user){
+            return res.status(404).json({status:'error',message:'User not found'});
+        }
+        res.status(200).json({status:'Success',user});
+    }catch(err){
+        res.status(500).json({status:'Error', error:err.message});
+    }
+}
+
 
 //exporting the controller functions
-module.exports={registerUser,loginUser};
+module.exports={registerUser,loginUser,getUserDetails};

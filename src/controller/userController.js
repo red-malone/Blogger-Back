@@ -39,7 +39,7 @@ const loginUser=async (req,res)=>{
         if(!user){
             return res.status(400).json({error:'Invalid email or password'});
         }
-        const isMatch=await bcrypt.compare(password,user.password);
+        const isMatch=await bcrypt.compare(password,user.passwordHash);
         if(!isMatch){
             return res.status(400).json({error:'Invalid email or password'});
         }

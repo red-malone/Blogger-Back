@@ -1,4 +1,4 @@
-const  blogController = require('../controllers/blogController');
+const  blogController = require('../controller/blogController');
 const express = require('express');
 const router = express.Router();
 const { validateBlog ,validateBlogMiddleware} = require('../validators/blogValidator');        

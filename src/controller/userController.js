@@ -1,4 +1,5 @@
 const User = require('../models/user.model');
+const UserCred = require('../models/userCred.model');
 const bcrypt = require('bcryptjs');
 const { generateToken } = require('../utils/jwtgenerator');
 
@@ -13,14 +14,16 @@ const registerUser=async (req,res)=>{
         }
         const user=await User.create({
             username,
+        })
+        await UserCred.create({
+            userId:user._id,
             email,
-            password:await bcrypt.hash(password,10)
-        })  
+            passwordHash:await bcrypt.hash(password,10)
+        })
         res.status(201).json({
             status:'Success',
             message:'User registered successfully',user
         })
-        
         
     }catch(err){
         res.status(500).json({error:err.message});
@@ -32,7 +35,7 @@ const registerUser=async (req,res)=>{
 const loginUser=async (req,res)=>{        
     try{
         const {email,password}=req.body;
-        const user=await User.findOne({email}).select('+password')
+        const user=await UserCred.findOne({email}).select('+passwordHash')
         if(!user){
             return res.status(400).json({error:'Invalid email or password'});
         }
@@ -40,11 +43,12 @@ const loginUser=async (req,res)=>{
         if(!isMatch){
             return res.status(400).json({error:'Invalid email or password'});
         }
-        const token=generateToken(user);   
+        const userDetail=await User.findById(user.userId);
+        const token=generateToken(user);  
         res.status(200).json({
             status:'Success',
             message:'User Login successfully',
-            user: { id: user._id, username: user.username, email: user.email },
+            user: { id: user.userId, username: userDetail.username, email: user.email },
             token
         })
         

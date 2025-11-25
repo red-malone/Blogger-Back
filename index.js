@@ -19,8 +19,6 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
 
-
-
 //health check route
 app.get('/health',(req,res)=>{
     res.status(200).json({status:'OK',message:'API is healthy'});

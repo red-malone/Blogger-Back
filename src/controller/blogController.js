@@ -14,16 +14,17 @@ const createBlog = async (req, res) => {
         .json({ status: "error", message: "Author not found" });
     }
 
-    const blog = !category
-      ? await blog.create({
+    const blog = 
+    !category && !tags
+      ? await Blog.create({
           title,
           content,
           author: authorId,
-          tags,
           isPublished: true,
           publishedAt: new Date(),
         })
-      : await Blog.create({
+      : 
+      await Blog.create({
           title,
           content,
           author: authorId,
@@ -49,7 +50,7 @@ const createBlog = async (req, res) => {
 // Get all blog posts
 const getAllBlogs = async (req, res) => {
   try {
-    const blogs = await Blog.find().populate("author", "username email");
+    const blogs = await Blog.find().populate("author", "username");
     res.status(200).json({
       status: "Success",
       blogs,
@@ -62,7 +63,7 @@ const getAllBlogs = async (req, res) => {
 const getBlogById = async (req, res) => {
   try {
     const { id } = req.params;
-    const blog = await Blog.findById(id).populate("author", "username email");
+    const blog = await Blog.findById(id).populate("author", "username");
     if (!blog) {
       return res
         .status(404)

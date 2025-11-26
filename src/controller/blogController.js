@@ -64,7 +64,7 @@ const getAllBlogs = async (req, res) => {
 const getBlogById = async (req, res) => {
   try {
     const { id } = req.params;
-    const blog = await Blog.findOne({ authorId: id }).populate("author", "username");
+    const blog = await Blog.find({ authorId: id }).populate("author", "username");
     if (!blog) {
       return res
         .status(404)

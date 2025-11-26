@@ -60,7 +60,6 @@ const getAllBlogs = async (req, res) => {
   }
 };
 // Get a single blog post by ID
-//TODO:getid by user id or some other id
 const getBlogById = async (req, res) => {
   try {
     const { id } = req.params;

@@ -35,7 +35,7 @@ const blogSchema=new mongoose.Schema({
                 ref:'User',
 
             },
-            text:String,
+            comment:String,
             createdAt:{
                 type:Date,
                 default:Date.now

@@ -27,13 +27,13 @@ app.get('/health',(req,res)=>{
 //importing user routes
 const userRouter=require('./src/routes/userRouter')
 const blogRouter=require('./src/routes/blogRouter')
-const commentRouter=require('./src/routes/commentRoute')
+const commentRouter=require('./src/routes/like&commentRoute')
 
 
 //Routes
 app.use('/users',userRouter);
 app.use('/blogs',blogRouter);
-app.use('/comments',commentRouter);
+app.use('/likecomments',commentRouter);
 //invalid route handler
 app.use('/',(req,res,next)=>{
     const error=new Error('Route not found');

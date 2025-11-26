@@ -24,10 +24,12 @@ const blogSchema=new mongoose.Schema({
         type:String,
        default:'General'
     },
-    likes:{
-        type:Number,
-        default:0
-    },
+    likes:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'User'
+        }
+    ],
     comments:[
         {
             user:{

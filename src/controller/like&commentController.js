@@ -1,5 +1,28 @@
 const Blog = require("../models/blog.model");
 
+//like a blog post 
+const likeunlikeBlog=async (req,res)=>{
+  try{
+    const blogId=req.params.id;
+    const userId=req.body.user;
+    const blog=await Blog.findById(blogId);
+    if(!blog){
+      return res.status(404).json({message:"Blog post not found"});
+    }
+    if(blog.likes.includes(userId)){
+      blog.likes.pull(userId);
+      await blog.save();
+      return res.status(200).json({message:"Blog post unliked successfully"});
+    }
+    blog.likes.push(userId);
+    await blog.save();
+    res.status(200).json({message:"Blog post liked successfully"});
+
+  }catch(e){
+    res.status(500).json({ message: "Error liking blog post" });
+  }
+}
+
 //put comment on a blog post
 const putComment = async (req, res) => {
   try {
@@ -55,4 +78,4 @@ const deleteComment= async (req,res)=>{
         res.status(500).json({ message: "Error deleting comment" });
     }
 }
-module.exports = { putComment, editComment, deleteComment };
+module.exports = { putComment, editComment, deleteComment, likeunlikeBlog };

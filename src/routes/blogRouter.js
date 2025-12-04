@@ -10,7 +10,7 @@ router.post('/', authMiddleware, validateBlog, validateBlogMiddleware, blogContr
 router.get('/', blogController.getAllBlogs);
 
 // Route to get a single blog post by ID (protected)
-router.get('/:id', authMiddleware, blogController.getBlogById);
+router.get('/user', authMiddleware, blogController.getBlogById);
 
 // Route to update a blog post (protected)
 router.put('/:id', authMiddleware, validateBlog, validateBlogMiddleware, blogController.updateBlog);

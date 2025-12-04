@@ -62,8 +62,7 @@ const getAllBlogs = async (req, res) => {
 // Get a single blog post by ID
 const getBlogById = async (req, res) => {
   try {
-    const { id } = req.params;
-    console.log(id)
+    const id=req.user.id
     const blog = await Blog.find({ authorId: id }).populate("author", "username").populate("comments.user", "username");
     if (!blog) {
       return res

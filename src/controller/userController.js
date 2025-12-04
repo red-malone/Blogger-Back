@@ -12,6 +12,10 @@ const registerUser=async (req,res)=>{
         if(existingUser){
             return  res.status(400).json({error:'User with this email already exists'});
         }
+        const existingUsername=await User.findOne({username})
+        if(existingUsername){
+            return  res.status(400).json({error:'Username already taken'});
+        }
         const user=await User.create({
             username,
         })
@@ -72,6 +76,26 @@ const getUserDetails=async(req,res)=>{
     }
 }
 
-
+const editUserDetails=async(req,res)=>{
+    try{
+        const userId=req.user.id;
+        const {username,bio,socialLinks}=req.body
+        const usernameExists=await User.findOne({username});
+        if(usernameExists && usernameExists._id.toString()!==userId){
+            return res.status(400).json({status:'error',message:'Username already taken'});
+        }
+        const user=await User.findById(userId);
+        if(!user){
+            return res.status(404).json({status:'error',message:'User not found'});
+        }
+        user.username=username||user.username;
+        user.bio=bio||user.bio;
+        user.socialLinks=socialLinks||user.socialLinks;
+        await user.save();
+        res.status(200).json({status:'Success',message:'User details updated successfully',user});
+    }catch(err){
+        res.status(500).json({status:'Error', error:err.message});
+    }
+}
 //exporting the controller functions
-module.exports={registerUser,loginUser,getUserDetails};
+module.exports={registerUser,loginUser,getUserDetails,editUserDetails};

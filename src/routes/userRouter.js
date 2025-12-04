@@ -10,7 +10,9 @@ router.post('/register', registerValidator, validateUserMiddleware, registerUser
 router.post('/login', loginValidator, validateUserMiddleware, loginUser);
 
 //User Details Route
-router.get('/profile',authMiddleware,getUserDetails)
+router.get('/profile',
+    authMiddleware,
+    getUserDetails)
 
 
 module.exports = router;

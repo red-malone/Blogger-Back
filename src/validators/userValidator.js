@@ -13,14 +13,34 @@ const loginValidator=[
     body('password').notEmpty().withMessage('Password is required')
 ]
 
-const editUserValidator=[
-    body('username').optional().notEmpty().withMessage('Username cannot be empty'),
-    body('bio').optional().isLength({max:160}).withMessage('Bio cannot exceed 160 characters'),
-    body('socialLinks.twitter').optional().isURL().withMessage('Twitter link must be a valid URL'),
-    body('socialLinks.linkedin').optional().isURL().withMessage('LinkedIn link must be a valid URL'),
-    body('socialLinks.github').optional().isURL().withMessage('GitHub link must be a valid URL'),
-    body('socialLinks.website').optional().isURL().withMessage('Website link must be a valid URL')
-]
+const editUserValidator = [
+    // For username: Keep standard optional if you want to forbid empty strings when the key is present
+    // OR use checkFalsy if you want to simply ignore empty updates.
+    body('username')
+        .optional({ checkFalsy: true }) 
+        .notEmpty().withMessage('Username cannot be empty'),
+
+    body('bio')
+        .optional({ checkFalsy: true }) // Skips validation if bio is ""
+        .isLength({ max: 160 }).withMessage('Bio cannot exceed 160 characters'),
+
+    // For links: checkFalsy is crucial because isURL("") returns false
+    body('socialLinks.twitter')
+        .optional({ checkFalsy: true }) 
+        .isURL().withMessage('Twitter link must be a valid URL'),
+
+    body('socialLinks.linkedin')
+        .optional({ checkFalsy: true })
+        .isURL().withMessage('LinkedIn link must be a valid URL'),
+
+    body('socialLinks.github')
+        .optional({ checkFalsy: true })
+        .isURL().withMessage('GitHub link must be a valid URL'),
+
+    body('socialLinks.website')
+        .optional({ checkFalsy: true })
+        .isURL().withMessage('Website link must be a valid URL')
+];
 //middleware to check validation results
 const validateUserMiddleware=(req,res,next)=>{
     const errors=validationResult(req);
